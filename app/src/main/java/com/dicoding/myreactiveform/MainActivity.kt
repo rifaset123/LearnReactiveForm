@@ -12,6 +12,7 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
 import io.reactivex.functions.Function3
 
+// https://www.dicoding.com/academies/165/tutorials/10334
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         // data stream
         val emailStream = RxTextView.textChanges(binding.edEmail)
-            .skipInitialValue() // supaya value kosong tidak langsung error
+            .skipInitialValue() // menghiraukan input awal
             .map { email ->
                 !Patterns.EMAIL_ADDRESS.matcher(email).matches()
             }
@@ -57,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // button behavior
-        val invalidFieldsStream = Observable.combineLatest(
+        val invalidFieldsStream = Observable.combineLatest( // menggabungkan ketiga data stream dan menghasilkan 1 output data stream baru
             emailStream,
             passwordStream,
             passwordConfirmationStream,
