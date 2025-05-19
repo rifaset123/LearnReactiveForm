@@ -14,12 +14,7 @@ import io.reactivex.functions.Function3
 
 class MainActivity : AppCompatActivity() {
 
-    private var emailValid = false
-    private var passwordValid = false
-    private var passwordConfirmationValid = false
-
     private lateinit var binding: ActivityMainBinding
-
 
     @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,12 +24,12 @@ class MainActivity : AppCompatActivity() {
 
         // data stream
         val emailStream = RxTextView.textChanges(binding.edEmail)
-            .skipInitialValue()
+            .skipInitialValue() // supaya value kosong tidak langsung error
             .map { email ->
                 !Patterns.EMAIL_ADDRESS.matcher(email).matches()
             }
         emailStream.subscribe {
-            showEmailExistAlert(it)
+            showEmailExistAlert(it) // supaya tersubscribe setiap kali ada perubahan
         }
 
         val passwordStream = RxTextView.textChanges(binding.edPassword)
